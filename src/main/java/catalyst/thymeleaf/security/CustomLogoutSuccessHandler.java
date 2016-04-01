@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AbstractAuthenticationTargetUrlRequestHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler{
@@ -20,7 +21,9 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler{
 
 		System.out.println("I logged out and did stuff");
 		
-		response.sendRedirect("/login");		
+		response.sendRedirect("/login");
+		response.setStatus(HttpServletResponse.SC_OK);
+		
 	}
 
 }

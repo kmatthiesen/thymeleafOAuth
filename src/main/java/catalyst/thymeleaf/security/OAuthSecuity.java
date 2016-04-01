@@ -3,14 +3,10 @@ package catalyst.thymeleaf.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
-import org.springframework.security.config.annotation.authentication.configurers.ldap.LdapAuthenticationProviderConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
-import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 
 /**
@@ -44,11 +40,11 @@ public class OAuthSecuity extends WebSecurityConfigurerAdapter {
 			.and()
 				.formLogin().loginPage("/login").permitAll().failureUrl("/login-fail").permitAll()
 			.and()
-				.logout().logoutUrl("/logout").logoutSuccessHandler(successHandler());		
+				.logout().logoutUrl("/logout").logoutSuccessHandler(successHandler()).logoutSuccessUrl("/login");		
 	}
 	
 	/**
-	 * Configures Spring Secuity to allow access to the static files regardless of if they are logged in.
+	 * Configures Spring Security to allow access to the static files regardless of if they are logged in.
 	 */
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -57,7 +53,7 @@ public class OAuthSecuity extends WebSecurityConfigurerAdapter {
 	}
 	
 	/**
-	 * Creates a new ActiveDirectoryLdapAuthenticationProvider which configures the connection to the ldap server 
+	 * Creates a new ActiveDirectoryLdapAuthenticationProvider which configures the connection to the LDAP server 
 	 * based on the parameters pass upon creation.
 	 * 
 	 * @return The ActiveDirectoryLdapAuthenticationProvider that was created.
@@ -78,7 +74,7 @@ public class OAuthSecuity extends WebSecurityConfigurerAdapter {
 	 */
 	@Bean
 	public CustomLogoutSuccessHandler successHandler() {
-		
+				
 		return new CustomLogoutSuccessHandler();
 	}
 }
