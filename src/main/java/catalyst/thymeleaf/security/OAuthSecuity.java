@@ -13,30 +13,48 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 
+/**
+ * Configures Spring Security to authenticate users with LDAP, the areas of the application users can access,
+ * and how to handle login/logout.
+ * 
+ * @author Kevin Matthiesen
+ */
 @Configuration
 @EnableWebSecurity
 public class OAuthSecuity extends WebSecurityConfigurerAdapter {
-	
+		
+	/**
+	 * Configures Spring Security to authenticate users using LDAP.
+	 */
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 						
 		auth.authenticationProvider(activeDirectoryLdapAuthenticationProvider());
 	}
 
+	/**
+	 * Configures the areas of the application users can go to and how to handle login/logout.
+	 */
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	public void configure(HttpSecurity http) throws Exception {
 		
 		http
 			.authorizeRequests()
-				.antMatchers("/webjars/**", "/images/**", "/css/**", "/js/**", "/logout").permitAll()
-			.and()
-				.authorizeRequests().anyRequest().authenticated()
+				.anyRequest().authenticated()
 			.and()
 				.formLogin().loginPage("/login").permitAll().failureUrl("/login-fail").permitAll()
 			.and()
-				.logout().logoutUrl("/logout").permitAll().logoutSuccessHandler(successHandler());
-//				
-	}			
+				.logout().logoutUrl("/logout").logoutSuccessHandler(successHandler());		
+	}
+	
+	/**
+	 * Configures Spring Secuity to allow access to the static files regardless of if they are logged in.
+	 */
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		
+		web.ignoring().antMatchers("/webjars/**", "/css/**", "/js/**", "/images/**");
+	}
 	
 	/**
 	 * Creates a new ActiveDirectoryLdapAuthenticationProvider which configures the connection to the ldap server 
@@ -53,6 +71,11 @@ public class OAuthSecuity extends WebSecurityConfigurerAdapter {
 	    return provider;
 	}
 	
+	/**
+	 * Creates a CustomLogoutSuccessHandler to handle logic when a user logs out successfully.
+	 * 
+	 * @return the new instance of the CustomLogoutSuccessHandler.
+	 */
 	@Bean
 	public CustomLogoutSuccessHandler successHandler() {
 		

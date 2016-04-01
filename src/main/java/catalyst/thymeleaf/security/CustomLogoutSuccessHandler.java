@@ -11,6 +11,9 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler{
 
+	/**
+	 * Deletes the user's token from the token repository and redirects the user to the login page.
+	 */
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth)
 			throws IOException, ServletException {
