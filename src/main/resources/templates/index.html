@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Hello Spring Boot!</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link
+	href="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}"
+	rel="stylesheet" media="screen" />
+
+<link th:href="@{/css/index.css}" rel="stylesheet" />
+
+<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.1/jquery.min.js"
+	th:src="@{/webjars/jquery/2.2.2/jquery.min.js}"></script>
+
+<script th:src="@{/js/logout.js}" charset="utf-8"></script>
+
+</head>
+<body>
+
+	<div th:include="fragments/navbar :: navbar"></div>
+	<div th:unless="${user == null}" class="container"
+		th:text="${'This is the home page, ' + user.name}">Template
+		Words</div>
+
+</body>
+</html>

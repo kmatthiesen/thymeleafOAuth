@@ -1,0 +1,4 @@
+function logout() {
+
+    $("#logoutForm").submit();
+}
